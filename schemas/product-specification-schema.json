@@ -1,0 +1,281 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "root": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "cardinality": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "cardinality": {
+                          "type": "string"
+                        },
+                        "children": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "children": {
+                                  "type": "array",
+                                  "items": {}
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "name",
+                                "children"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "children": {
+                                  "type": "array",
+                                  "items": {}
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "name",
+                                "children"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "children": {
+                                  "type": "array",
+                                  "items": {}
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "name",
+                                "children"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "children": {
+                                  "type": "array",
+                                  "items": {}
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "name",
+                                "children"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "name",
+                        "cardinality",
+                        "children"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "cardinality",
+                "children"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "children": {
+                          "type": "array",
+                          "items": {}
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "name",
+                        "children"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "children": {
+                          "type": "array",
+                          "items": {}
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "name",
+                        "children"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "children"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "children"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "children"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "children"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "children"
+      ]
+    }
+  },
+  "required": [
+    "root"
+  ]
+}

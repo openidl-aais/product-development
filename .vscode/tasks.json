@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "xslt-js",
+            "label": "xslt-js: Generate JSON from MindMap",
+            "xsltFile": "${workspaceFolder}/xslt/mmToJson.xslt",
+            "xmlSource": "${file}",
+            "resultPath": "${workspaceFolder}/productSpecifications/result1.json",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$saxon-xslt-js"]
+        }
+    ]
+}

@@ -1,0 +1,73 @@
+{
+    "root": {
+        "type": "product",
+        "name": "BOP",
+        "children": [
+            {
+                "type": "SOI",
+                "name": "Location",
+                "cardinality": "0..*",
+                "children": [
+                    {
+                        "type": "SOI",
+                        "name": "Building",
+                        "cardinality": "1..*",
+                        "children": [
+                            {
+                                "type": "COV",
+                                "name": "Property",
+                                "children": []
+                            },
+                            {
+                                "type": "COV",
+                                "name": "Contents",
+                                "children": []
+                            },
+                            {
+                                "type": "PROP",
+                                "name": "ConstructionType",
+                                "children": []
+                            },
+                            {
+                                "type": "PROP",
+                                "name": "NumberOfFloors",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "gcr",
+                "name": "coverage forms",
+                "children": [
+                    {
+                        "type": "cov form",
+                        "name": "BP 0100",
+                        "children": []
+                    },
+                    {
+                        "type": "cov form",
+                        "name": "BP 0200",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "type": "prop",
+                "name": "Effective Date",
+                "children": []
+            },
+            {
+                "type": "prop",
+                "name": "Expiration Date",
+                "children": []
+            },
+            {
+                "type": "prop",
+                "name": "Occupied By Insured",
+                "children": []
+            }
+        ]
+    }
+}
