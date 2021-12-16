@@ -1,2 +1,4 @@
 node_modules
 productSpecifications/AAIS-IM
+.DS_Store
+productSpecifications/result1.json

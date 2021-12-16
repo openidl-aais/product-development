@@ -12,4 +12,4 @@ open visual studio code on that directory
 
 install deltaxml xslt/xpath plugin
 
-install xslt-js node
+install xslt-js node `npm install xslt-js`
