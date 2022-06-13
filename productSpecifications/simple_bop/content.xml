@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xmap-content xmlns="urn:xmind:xmap:xmlns:content:2.0" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" modified-by="kennethwsayers" timestamp="1639794539770" version="2.0">
+    <sheet id="3r4lv9cu2j2043r4oj8h4jlkgb" modified-by="kennethwsayers" theme="3dsrptj2t9jq2brct627lk2pj8" timestamp="1639794539769">
+        <topic id="27sb985875mpjhf5goo4gks7g4" modified-by="kennethwsayers" structure-class="org.xmind.ui.map.unbalanced" timestamp="1639794539769">
+            <title>bop</title>
+            <labels>
+                <label>product</label>
+            </labels>
+            <children>
+                <topics type="attached">
+                    <topic id="7omtuc4kh1dk8pcj9nslptivlj" modified-by="kennethwsayers" timestamp="1639794539769">
+                        <title>location</title>
+                        <labels>
+                            <label>risk</label>
+                        </labels>
+                        <children>
+                            <topics type="attached">
+                                <topic id="6ogibr4l4c7tqp5qqhhm14832n" modified-by="kennethwsayers" timestamp="1639794539768">
+                                    <title>building</title>
+                                    <labels>
+                                        <label>risk</label>
+                                    </labels>
+                                    <children>
+                                        <topics type="attached">
+                                            <topic id="3f6analvpt5vg8s6lluhti646o" modified-by="kennethwsayers" timestamp="1639794539768">
+                                                <title>buildingCoverage</title>
+                                                <labels>
+                                                    <label>coverage</label>
+                                                </labels>
+                                                <notes>
+                                                    <plain>cardinality: 0..1</plain>
+                                                    <html>
+                                                        <xhtml:p>cardinality: 0..1</xhtml:p>
+                                                    </html>
+                                                </notes>
+                                            </topic>
+                                            <topic id="5f9jtmi91njk8uaae7765ml8bp" modified-by="kennethwsayers" timestamp="1639794539768">
+                                                <title>contentsCoverage</title>
+                                                <labels>
+                                                    <label>coverage</label>
+                                                </labels>
+                                                <notes>
+                                                    <plain>cardinality: 0..1</plain>
+                                                    <html>
+                                                        <xhtml:p>cardinality: 0..1</xhtml:p>
+                                                    </html>
+                                                </notes>
+                                            </topic>
+                                            <topic id="14f4j6gbervr825un54mh8bp89" modified-by="kennethwsayers" timestamp="1639794539768">
+                                                <title>buildingValue</title>
+                                                <labels>
+                                                    <label>property</label>
+                                                </labels>
+                                            </topic>
+                                            <topic id="39lk2il0invpiotmi6f1sqhp40" modified-by="kennethwsayers" timestamp="1639794539768">
+                                                <title>construction</title>
+                                                <labels>
+                                                    <label>property</label>
+                                                </labels>
+                                            </topic>
+                                        </topics>
+                                    </children>
+                                </topic>
+                            </topics>
+                        </children>
+                        <notes>
+                            <plain>cardinality: 0..*</plain>
+                            <html>
+                                <xhtml:p>cardinality: 0..*</xhtml:p>
+                            </html>
+                        </notes>
+                    </topic>
+                </topics>
+            </children>
+            <extensions>
+                <extension provider="org.xmind.ui.map.unbalanced">
+                    <content>
+                        <right-number>1</right-number>
+                    </content>
+                </extension>
+            </extensions>
+            <notes>
+                <plain>business name: Businessowners Program
+family: Commercia</plain>
+                <html>
+                    <xhtml:p>business name: Businessowners Program</xhtml:p>
+                    <xhtml:p>family: Commercia</xhtml:p>
+                </html>
+            </notes>
+        </topic>
+        <title>Sheet 1</title>
+    </sheet>
+</xmap-content>

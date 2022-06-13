@@ -1,13 +1,15 @@
-const fs = require('fs')
-const Validator = require('jsonschema').Validator
+const fs = require("fs");
+const Validator = require("jsonschema").Validator;
 
-let v = new Validator()
+let v = new Validator();
 
-let contents = fs.readFileSync('./productSpecifications/result1.json')
-let json = JSON.parse(contents)
+let contents = fs.readFileSync("./productSpecifications/result1.json");
+let json = JSON.parse(contents);
 
-let schema = JSON.parse(fs.readFileSync('./schemas/product-specification-schema.json'))
+let schema = JSON.parse(
+  fs.readFileSync("./schemas/product-specification-schema.json")
+);
 
-v.addSchema(schema)
+v.addSchema(schema);
 
-console.log(v.validate(json, schema))
+console.log(v.validate(json, schema));
