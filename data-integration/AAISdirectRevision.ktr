@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>AAISdirectSeries</name>
+    <name>AAISdirectRevision</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -548,7 +548,7 @@
   </connection>
   <order>
     <hop>
-      <from>Series Input</from>
+      <from>Revision Input</from>
       <to>Add sequence</to>
       <enabled>Y</enabled>
     </hop>
@@ -594,7 +594,7 @@
         <currency/>
         <decimal/>
         <group/>
-        <nullif>PCFormSeries</nullif>
+        <nullif>PCManualRevision</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -629,7 +629,7 @@
     <use_database>Y</use_database>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <seqname>SEQ_PC_FORM_SERIES</seqname>
+    <seqname>SEQ_PC_MANUAL_REVISION</seqname>
     <use_counter>N</use_counter>
     <counter_name/>
     <start_at>1</start_at>
@@ -650,7 +650,7 @@
     </GUI>
   </step>
   <step>
-    <name>Series Input</name>
+    <name>Revision Input</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -662,16 +662,17 @@
     </partitioning>
     <connection>AAISdirect old</connection>
     <sql>SELECT
-  SeriesID
+  RevisionID
 , InsertUserID
 , InsertDateTime
 , UpdateUserID
 , UpdateDateTime
-, LineID
 , Name
 , Description
+, LineVersionID
+, StateID
 , "Sequence"
-FROM dbo.Series
+FROM dbo.Revision
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -683,11 +684,11 @@ FROM dbo.Series
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>SeriesID</name>
+        <name>RevisionID</name>
         <length>15</length>
         <precision>0</precision>
         <origin>Series Input</origin>
-        <comments>SeriesID</comments>
+        <comments>RevisionID</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -796,33 +797,10 @@ FROM dbo.Series
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>LineID</name>
-        <length>15</length>
-        <precision>0</precision>
-        <origin>Series Input</origin>
-        <comments>LineID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Denver</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
         <name>Name</name>
-        <length>50</length>
+        <length>25</length>
         <precision>-1</precision>
         <origin>Series Input</origin>
         <comments>Name</comments>
@@ -850,6 +828,52 @@ FROM dbo.Series
         <origin>Series Input</origin>
         <comments>Description</comments>
         <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Denver</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>LineVersionID</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>Series Input</origin>
+        <comments>LineVersionID</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Denver</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>StateID</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>Series Input</origin>
+        <comments>StateID</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -915,7 +939,7 @@ FROM dbo.Series
     </partitioning>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_PC_FORM_SERIES</table>
+    <table>SA_PC_MANUAL_REVISION</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
@@ -932,12 +956,8 @@ FROM dbo.Series
     <return_field/>
     <fields>
       <field>
-        <column_name>SERIES_ID</column_name>
-        <stream_name>SeriesID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_ID</column_name>
-        <stream_name>LineID</stream_name>
+        <column_name>REVISION_ID</column_name>
+        <stream_name>RevisionID</stream_name>
       </field>
       <field>
         <column_name>NAME</column_name>
@@ -946,6 +966,14 @@ FROM dbo.Series
       <field>
         <column_name>DESCRIPTION</column_name>
         <stream_name>Description</stream_name>
+      </field>
+      <field>
+        <column_name>LINE_VERSION_ID</column_name>
+        <stream_name>LineVersionID</stream_name>
+      </field>
+      <field>
+        <column_name>STATE_ID</column_name>
+        <stream_name>StateID</stream_name>
       </field>
       <field>
         <column_name>PC_SEQUENCE</column_name>
