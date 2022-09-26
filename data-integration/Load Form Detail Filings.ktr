@@ -1,6 +1,6 @@
 <transformation>
   <info>
-    <name>Load Form Filings</name>
+    <name>Load Form Detail Filings</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2022/06/14 08:34:25.648</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/07/07 13:54:54.193</modified_date>
+    <modified_date>2022/08/29 08:15:02.720</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -442,8 +442,8 @@
     <access>Native</access>
     <database>devmart</database>
     <port>1521</port>
-    <username>kens</username>
-    <password>Encrypted 2be98afc86aa7f2e4cb79ce10d597a1c9</password>
+    <username>Gregw</username>
+    <password>Encrypted 2be98afc86af59d8bb80da162dbc6fc9e</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -593,7 +593,7 @@
         <currency/>
         <decimal/>
         <group/>
-        <nullif>FDFormFiling</nullif>
+        <nullif>FDFormFilingDetail</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -608,8 +608,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>224</yloc>
+      <xloc>416</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -627,8 +627,8 @@
     <valuename>FORM_FILING_ID</valuename>
     <use_database>Y</use_database>
     <connection>PDP Semarchy</connection>
-    <schema/>
-    <seqname>SEQ_FD_FORM_FILING</seqname>
+    <schema>PDP_DATA_LOCATION</schema>
+    <seqname>SEQ_FD_FORM_FILING_DETAIL</seqname>
     <use_counter>N</use_counter>
     <counter_name/>
     <start_at>1</start_at>
@@ -660,49 +660,41 @@
       <schema_name/>
     </partitioning>
     <connection>devmart filings</connection>
-    <sql>SELECT
-  dtl.DFORM_ID
-, dtl.FORM_ID
-, dtl.FORM
-, dtl.EDITION
-, line.REPORTDESCRIPTION as LINE_NAME
-, dtl.LINE
-, dtl.CATEGORY
-, dtl.STATE
-, dtl.CLASS
-, UPPER(dtl.ACTIVECODE) as ACTIVECODE
-, case
-	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then null
-	else to_date(dtl.ACTIVITYDATE, 'MM/dd/yyyy')
-end as ACTIVITYDATE
-, dtl.DETTEXT
-, dtl.FILED
-, dtl.DOCNUM
-, dtl.DOIFILINGNUM
-, dtl.AAISFILINGNUM
-, dtl.SERFF_TRACKING_NUMBER
-, dtl.SERFF_COMPANY_STATUS
-, dtl.SERFF_FORM_TYPE
-, dtl.SERFF_REPLACED_FORM_NUMBER
-, dtl.STATESPECIFIC
-, dtl.SERFF_FORM_EDITION_DATE
-, dtl.CREATE_DT
-, dtl.UPDATE_DT
-, dtl.FORMTITLE
-, dtl.EFF_DT
-, dtl.EXP_DT
-, dtl.FORMSEQ
-, dtl.RATEIMPACT
-, dtl.DOCUMENT_NUMBER
-, dtl.FORMS_REVISION
-, dtl.ALFRESCO_KEY
-, dtl.EXP_SERFF_TRACKING_NUMBER
-, dtl.FORM_ACTION
-FROM AAIS_FILINGS.FE_FORMS_DETAIL dtl
-JOIN AAIS_FILINGS.FE_LINE line on line.LINECODE = dtl.LINE
-where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PROGRAM'
-
-</sql>
+    <sql>SELECT 
+FORM as FormName,
+EDITION, 
+DOCUMENT_KEY,
+FORM_ID, 
+LINE,
+LINE_NAME, 
+CATEGORY, 
+STATE, 
+CLASS, 
+EFFECTIVE_DATE, 
+EXP_DT as ExpirationDate, 
+ACTIVECODE, 
+ACTIVITYDATE, 
+DETTEXT as DetailText, 
+FILED, 
+DOIFILINGNUM,
+AAISFILINGNUM,
+SERFF_TRACKING_NUMBER, 
+SERFF_COMPANY_STATUS, 
+SERFF_FORM_TYPE, 
+SERFF_REPLACED_FORM_NUMBER, 
+STATESPECIFIC, 
+SERFF_FORM_EDITION_DATE, 
+CREATE_DT, 
+UPDATE_DT, 
+FORMTITLE, 
+FORMSEQ, 
+RATEIMPACT, 
+DOCUMENT_NUMBER, 
+FORMS_REVISION, 
+EXP_SERFF_TRACKING_NUMBER, 
+ALFRESCO_KEY, 
+FORM_ACTION
+FROM GREGW.FORMS_VIEW</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -711,59 +703,13 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
     <cached_row_meta_active>N</cached_row_meta_active>
     <row-meta>
       <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>DFORM_ID</name>
-        <length>7</length>
-        <precision>0</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>DFORM_ID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>FORM_ID</name>
-        <length>7</length>
-        <precision>0</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>FORM_ID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>FORM</name>
+        <name>FORMNAME</name>
         <length>26</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>FORM</comments>
+        <comments>FORMNAME</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -805,12 +751,35 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>LINE_NAME</name>
-        <length>128</length>
+        <name>DOCUMENT_KEY</name>
+        <length>40</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>LINE_NAME</comments>
+        <comments>DOCUMENT_KEY</comments>
         <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>FORM_ID</name>
+        <length>7</length>
+        <precision>0</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>FORM_ID</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -833,6 +802,29 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
         <comments>LINE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>LINE_NAME</name>
+        <length>128</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>LINE_NAME</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -918,6 +910,52 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>EFFECTIVE_DATE</name>
+        <length>6</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>EFFECTIVE_DATE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>EXPIRATIONDATE</name>
+        <length>6</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>EXPIRATIONDATE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
         <name>ACTIVECODE</name>
@@ -966,11 +1004,11 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>DETTEXT</name>
+        <name>DETAILTEXT</name>
         <length>256</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>DETTEXT</comments>
+        <comments>DETAILTEXT</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -995,29 +1033,6 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <origin>FE_FORM_DETAIL input</origin>
         <comments>FILED</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>DOCNUM</name>
-        <length>256</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>DOCNUM</comments>
-        <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -1286,52 +1301,6 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>EFF_DT</name>
-        <length>6</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>EFF_DT</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>EXP_DT</name>
-        <length>6</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>EXP_DT</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>BigNumber</type>
         <storagetype>normal</storagetype>
         <name>FORMSEQ</name>
@@ -1426,11 +1395,11 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>ALFRESCO_KEY</name>
+        <name>EXP_SERFF_TRACKING_NUMBER</name>
         <length>50</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>ALFRESCO_KEY</comments>
+        <comments>EXP_SERFF_TRACKING_NUMBER</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1449,11 +1418,11 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>EXP_SERFF_TRACKING_NUMBER</name>
-        <length>50</length>
+        <name>ALFRESCO_KEY</name>
+        <length>95</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>EXP_SERFF_TRACKING_NUMBER</comments>
+        <comments>ALFRESCO_KEY</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1520,7 +1489,7 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
     </partitioning>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_FD_FORM_FILING</table>
+    <table>SA_FD_FORM_FILING_DETAIL</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
@@ -1537,44 +1506,24 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
     <return_field/>
     <fields>
       <field>
-        <column_name>ID</column_name>
-        <stream_name>FORM_FILING_ID</stream_name>
-      </field>
-      <field>
-        <column_name>FORM_NAME</column_name>
-        <stream_name>FORM</stream_name>
-      </field>
-      <field>
         <column_name>EDITION</column_name>
         <stream_name>EDITION</stream_name>
+      </field>
+      <field>
+        <column_name>DOCUMENT_KEY</column_name>
+        <stream_name>DOCUMENT_KEY</stream_name>
+      </field>
+      <field>
+        <column_name>FORM_ID</column_name>
+        <stream_name>FORM_ID</stream_name>
       </field>
       <field>
         <column_name>LINE</column_name>
         <stream_name>LINE</stream_name>
       </field>
       <field>
-        <column_name>D_FORM_ID</column_name>
-        <stream_name>DFORM_ID</stream_name>
-      </field>
-      <field>
-        <column_name>ADMIN_FORM_ACTION</column_name>
-        <stream_name>FORM_ACTION</stream_name>
-      </field>
-      <field>
-        <column_name>B_LOADID</column_name>
-        <stream_name>LOAD_ID</stream_name>
-      </field>
-      <field>
-        <column_name>B_CLASSNAME</column_name>
-        <stream_name>CLASSNAME</stream_name>
-      </field>
-      <field>
-        <column_name>ACTIVITY_DATE</column_name>
-        <stream_name>ACTIVITYDATE</stream_name>
-      </field>
-      <field>
-        <column_name>SYSTEM_ID</column_name>
-        <stream_name>FORM_ID</stream_name>
+        <column_name>LINE_NAME</column_name>
+        <stream_name>LINE_NAME</stream_name>
       </field>
       <field>
         <column_name>CATEGORY</column_name>
@@ -1589,24 +1538,40 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <stream_name>CLASS</stream_name>
       </field>
       <field>
-        <column_name>ACTIVE_CODE</column_name>
+        <column_name>EFFECTIVE_DATE</column_name>
+        <stream_name>EFFECTIVE_DATE</stream_name>
+      </field>
+      <field>
+        <column_name>ACTIVECODE</column_name>
         <stream_name>ACTIVECODE</stream_name>
       </field>
       <field>
-        <column_name>DETAIL_TEXT</column_name>
-        <stream_name>DETTEXT</stream_name>
+        <column_name>ACTIVITYDATE</column_name>
+        <stream_name>ACTIVITYDATE</stream_name>
       </field>
       <field>
         <column_name>FILED</column_name>
         <stream_name>FILED</stream_name>
       </field>
       <field>
-        <column_name>DOCUMENT_NUMBER</column_name>
-        <stream_name>DOCNUM</stream_name>
+        <column_name>STATESPECIFIC</column_name>
+        <stream_name>STATESPECIFIC</stream_name>
       </field>
       <field>
         <column_name>DOI_FILING_NUMBER</column_name>
         <stream_name>DOIFILINGNUM</stream_name>
+      </field>
+      <field>
+        <column_name>FORM_NAME</column_name>
+        <stream_name>FORMNAME</stream_name>
+      </field>
+      <field>
+        <column_name>EXPIRATION_DATE</column_name>
+        <stream_name>EXPIRATIONDATE</stream_name>
+      </field>
+      <field>
+        <column_name>DETAIL_TEXT</column_name>
+        <stream_name>DETAILTEXT</stream_name>
       </field>
       <field>
         <column_name>AAIS_FILING_NUMBER</column_name>
@@ -1629,10 +1594,6 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <stream_name>SERFF_REPLACED_FORM_NUMBER</stream_name>
       </field>
       <field>
-        <column_name>STATE_SPECIFIC</column_name>
-        <stream_name>STATESPECIFIC</stream_name>
-      </field>
-      <field>
         <column_name>SYSTEM_FORM_EDITION_DATE</column_name>
         <stream_name>SERFF_FORM_EDITION_DATE</stream_name>
       </field>
@@ -1647,14 +1608,6 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <field>
         <column_name>FORM_TITLE</column_name>
         <stream_name>FORMTITLE</stream_name>
-      </field>
-      <field>
-        <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EFF_DT</stream_name>
-      </field>
-      <field>
-        <column_name>EXPIRATION_DATE</column_name>
-        <stream_name>EXP_DT</stream_name>
       </field>
       <field>
         <column_name>FORM_SEQUENCE</column_name>
@@ -1673,16 +1626,28 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <stream_name>FORMS_REVISION</stream_name>
       </field>
       <field>
-        <column_name>ADMIN_ALFRESCO_KEY</column_name>
-        <stream_name>ALFRESCO_KEY</stream_name>
-      </field>
-      <field>
         <column_name>ADMIN_EXP_SYSTEM_TRACKING</column_name>
         <stream_name>EXP_SERFF_TRACKING_NUMBER</stream_name>
       </field>
       <field>
-        <column_name>LINE_NAME</column_name>
-        <stream_name>LINE_NAME</stream_name>
+        <column_name>ADMIN_FORM_ACTION</column_name>
+        <stream_name>FORM_ACTION</stream_name>
+      </field>
+      <field>
+        <column_name>ADMIN_ALFRESCO_KEY</column_name>
+        <stream_name>ALFRESCO_KEY</stream_name>
+      </field>
+      <field>
+        <column_name>B_LOADID</column_name>
+        <stream_name>LOAD_ID</stream_name>
+      </field>
+      <field>
+        <column_name>B_CLASSNAME</column_name>
+        <stream_name>CLASSNAME</stream_name>
+      </field>
+      <field>
+        <column_name>ID</column_name>
+        <stream_name>FORM_FILING_ID</stream_name>
       </field>
     </fields>
     <attributes/>
@@ -1694,8 +1659,8 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>352</yloc>
+      <xloc>528</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
