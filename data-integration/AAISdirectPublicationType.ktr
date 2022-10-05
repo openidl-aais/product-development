@@ -1,6 +1,6 @@
 <transformation>
   <info>
-    <name>AAISdirectPublications</name>
+    <name>AAISdirectPublicationType</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -428,7 +428,7 @@
     <created_user>-</created_user>
     <created_date>2022/09/14 14:23:44.637</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/10/04 06:52:17.542</modified_date>
+    <modified_date>2022/09/28 14:09:23.438</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -550,7 +550,7 @@
   </connection>
   <order>
     <hop>
-      <from>Publication Input</from>
+      <from>Publication TypeInput</from>
       <to>Add sequence</to>
       <enabled>Y</enabled>
     </hop>
@@ -596,7 +596,7 @@
         <currency/>
         <decimal/>
         <group/>
-        <nullif>PCPublication</nullif>
+        <nullif>PCPublicationType</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -631,7 +631,7 @@
     <use_database>Y</use_database>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <seqname>SEQ_PC_PUBLICATION</seqname>
+    <seqname>SEQ_PC_PUBLICATION_TYPE</seqname>
     <use_counter>N</use_counter>
     <counter_name/>
     <start_at>1</start_at>
@@ -652,7 +652,7 @@
     </GUI>
   </step>
   <step>
-    <name>Publication Input</name>
+    <name>Publication TypeInput</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -663,35 +663,29 @@
       <schema_name/>
     </partitioning>
     <connection>AAISdirect old</connection>
-    <sql>SELECT 
-  PublicationID
-, InsertUserID
-, InsertDateTime
-, UpdateUserID
-, UpdateDateTime
+    <sql>SELECT
+  PublicationTypeID
 , Name
+, ShortName
 , Description
-, ImportantNote
+, SubscriptionDisclaimer
+, ISNULL(IsSearchable,0) as IsSearchable
+, ParentPublicationTypeID
+, ISNULL(IsMultipleChildrenAssignmentsAllowed,0) as IsMultipleChildrenAssignmentsAllowed
+, ISNULL(HasChildrenWithDifferentVariations,0) as HasChildrenWithDifferentVariations
 , DefaultFilingStatusID
-, StatusID
-, ScheduledActivationDateTime
-, ActivationDateTime
-, ScheduledDeactivationDateTime
-, DeactivationDateTime
-, IsMultiState
-, IsAllCompanies
-, IsDeprecated
-, EffectiveDate
-, InActiveDate
-, IsCartAllowed
-, URL
-, SortPrimaryAsc
-, SortSecondaryAsc
-, SortPrimaryDesc
-, SortSecondaryDesc
-, AssociationID
-FROM dbo.Publication
-
+, EnumConstantName
+, "Sequence"
+, ISNULL(IsURL,0) as IsURL
+, GroupedName
+, GroupedShortName
+, ISNULL(AreAssignmentsVisible,0) as AreAssignmentsVisible
+, ISNULL(IsMultistateAvailable,0) as IsMultistateAvailable
+, ISNULL(IsClassUsed,0) as IsClassUsed
+, ISNULL(IsUsedForPrivilegeAssociation,0) as IsUsedForPrivilegeAssociation
+, ISNULL(ArePrivilegeAssociationsAvailable,0) as ArePrivilegeAssociationsAvailable
+, SortTypeID
+FROM config.PublicationType
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -703,104 +697,12 @@ FROM dbo.Publication
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>PublicationID</name>
+        <name>PublicationTypeID</name>
         <length>15</length>
         <precision>0</precision>
-        <origin>Publication Input</origin>
-        <comments>PublicationID</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>PublicationTypeID</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>InsertUserID</name>
-        <length>15</length>
-        <precision>0</precision>
-        <origin>Publication Input</origin>
-        <comments>InsertUserID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>InsertDateTime</name>
-        <length>3</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>InsertDateTime</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>UpdateUserID</name>
-        <length>15</length>
-        <precision>0</precision>
-        <origin>Publication Input</origin>
-        <comments>UpdateUserID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>UpdateDateTime</name>
-        <length>3</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>UpdateDateTime</comments>
-        <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -819,9 +721,9 @@ FROM dbo.Publication
         <type>String</type>
         <storagetype>normal</storagetype>
         <name>Name</name>
-        <length>250</length>
+        <length>100</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
+        <origin>Publication TypeInput</origin>
         <comments>Name</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
@@ -841,10 +743,33 @@ FROM dbo.Publication
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>Description</name>
-        <length>8000</length>
+        <name>ShortName</name>
+        <length>30</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
+        <origin>Publication TypeInput</origin>
+        <comments>ShortName</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>Description</name>
+        <length>4000</length>
+        <precision>-1</precision>
+        <origin>Publication TypeInput</origin>
         <comments>Description</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
@@ -864,11 +789,103 @@ FROM dbo.Publication
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>ImportantNote</name>
-        <length>8000</length>
+        <name>SubscriptionDisclaimer</name>
+        <length>4000</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>ImportantNote</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>SubscriptionDisclaimer</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Boolean</type>
+        <storagetype>normal</storagetype>
+        <name>IsSearchable</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Publication TypeInput</origin>
+        <comments>IsSearchable</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>ParentPublicationTypeID</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>Publication TypeInput</origin>
+        <comments>ParentPublicationTypeID</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Boolean</type>
+        <storagetype>normal</storagetype>
+        <name>IsMultipleChildrenAssignmentsAllowed</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Publication TypeInput</origin>
+        <comments>IsMultipleChildrenAssignmentsAllowed</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Boolean</type>
+        <storagetype>normal</storagetype>
+        <name>HasChildrenWithDifferentVariations</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Publication TypeInput</origin>
+        <comments>HasChildrenWithDifferentVariations</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -890,7 +907,7 @@ FROM dbo.Publication
         <name>DefaultFilingStatusID</name>
         <length>15</length>
         <precision>0</precision>
-        <origin>Publication Input</origin>
+        <origin>Publication TypeInput</origin>
         <comments>DefaultFilingStatusID</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
@@ -908,13 +925,36 @@ FROM dbo.Publication
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>EnumConstantName</name>
+        <length>20</length>
+        <precision>-1</precision>
+        <origin>Publication TypeInput</origin>
+        <comments>EnumConstantName</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>StatusID</name>
-        <length>15</length>
+        <name>Sequence</name>
+        <length>9</length>
         <precision>0</precision>
-        <origin>Publication Input</origin>
-        <comments>StatusID</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>Sequence</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -931,13 +971,13 @@ FROM dbo.Publication
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Timestamp</type>
+        <type>Boolean</type>
         <storagetype>normal</storagetype>
-        <name>ScheduledActivationDateTime</name>
-        <length>3</length>
+        <name>IsURL</name>
+        <length>-1</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>ScheduledActivationDateTime</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>IsURL</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -954,13 +994,13 @@ FROM dbo.Publication
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Timestamp</type>
+        <type>String</type>
         <storagetype>normal</storagetype>
-        <name>ActivationDateTime</name>
-        <length>3</length>
+        <name>GroupedName</name>
+        <length>120</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>ActivationDateTime</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>GroupedName</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -977,36 +1017,13 @@ FROM dbo.Publication
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Timestamp</type>
+        <type>String</type>
         <storagetype>normal</storagetype>
-        <name>ScheduledDeactivationDateTime</name>
-        <length>3</length>
+        <name>GroupedShortName</name>
+        <length>50</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>ScheduledDeactivationDateTime</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>DeactivationDateTime</name>
-        <length>3</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>DeactivationDateTime</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>GroupedShortName</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1025,11 +1042,11 @@ FROM dbo.Publication
       <value-meta>
         <type>Boolean</type>
         <storagetype>normal</storagetype>
-        <name>IsMultiState</name>
+        <name>AreAssignmentsVisible</name>
         <length>-1</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>IsMultiState</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>AreAssignmentsVisible</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1048,11 +1065,11 @@ FROM dbo.Publication
       <value-meta>
         <type>Boolean</type>
         <storagetype>normal</storagetype>
-        <name>IsAllCompanies</name>
+        <name>IsMultistateAvailable</name>
         <length>-1</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>IsAllCompanies</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>IsMultistateAvailable</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1071,57 +1088,11 @@ FROM dbo.Publication
       <value-meta>
         <type>Boolean</type>
         <storagetype>normal</storagetype>
-        <name>IsDeprecated</name>
+        <name>IsClassUsed</name>
         <length>-1</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>IsDeprecated</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Date</type>
-        <storagetype>normal</storagetype>
-        <name>EffectiveDate</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>EffectiveDate</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Date</type>
-        <storagetype>normal</storagetype>
-        <name>InActiveDate</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>InActiveDate</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>IsClassUsed</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1140,11 +1111,11 @@ FROM dbo.Publication
       <value-meta>
         <type>Boolean</type>
         <storagetype>normal</storagetype>
-        <name>IsCartAllowed</name>
+        <name>IsUsedForPrivilegeAssociation</name>
         <length>-1</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>IsCartAllowed</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>IsUsedForPrivilegeAssociation</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1161,105 +1132,13 @@ FROM dbo.Publication
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>String</type>
+        <type>Boolean</type>
         <storagetype>normal</storagetype>
-        <name>URL</name>
-        <length>500</length>
+        <name>ArePrivilegeAssociationsAvailable</name>
+        <length>-1</length>
         <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>URL</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>SortPrimaryAsc</name>
-        <length>10</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>SortPrimaryAsc</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>SortSecondaryAsc</name>
-        <length>10</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>SortSecondaryAsc</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>SortPrimaryDesc</name>
-        <length>10</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>SortPrimaryDesc</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>SortSecondaryDesc</name>
-        <length>10</length>
-        <precision>-1</precision>
-        <origin>Publication Input</origin>
-        <comments>SortSecondaryDesc</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>ArePrivilegeAssociationsAvailable</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1278,11 +1157,11 @@ FROM dbo.Publication
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>AssociationID</name>
+        <name>SortTypeID</name>
         <length>15</length>
         <precision>0</precision>
-        <origin>Publication Input</origin>
-        <comments>AssociationID</comments>
+        <origin>Publication TypeInput</origin>
+        <comments>SortTypeID</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -1326,7 +1205,7 @@ FROM dbo.Publication
     </partitioning>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_PC_PUBLICATION</table>
+    <table>SA_PC_PUBLICATION_TYPE</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
@@ -1343,108 +1222,84 @@ FROM dbo.Publication
     <return_field/>
     <fields>
       <field>
-        <column_name>PUBLICATION_ID</column_name>
-        <stream_name>PublicationID</stream_name>
-      </field>
-      <field>
-        <column_name>INSERT_USER_ID</column_name>
-        <stream_name>InsertUserID</stream_name>
-      </field>
-      <field>
-        <column_name>INSERT_DATE_TIME</column_name>
-        <stream_name>InsertDateTime</stream_name>
-      </field>
-      <field>
-        <column_name>UPDATE_USER_ID</column_name>
-        <stream_name>UpdateUserID</stream_name>
-      </field>
-      <field>
-        <column_name>UPDATE_DATE_TIME</column_name>
-        <stream_name>UpdateDateTime</stream_name>
+        <column_name>PUBLICATION_TYPE_ID</column_name>
+        <stream_name>PublicationTypeID</stream_name>
       </field>
       <field>
         <column_name>NAME</column_name>
         <stream_name>Name</stream_name>
       </field>
       <field>
+        <column_name>SHORT_NAME</column_name>
+        <stream_name>ShortName</stream_name>
+      </field>
+      <field>
         <column_name>DESCRIPTION</column_name>
         <stream_name>Description</stream_name>
       </field>
       <field>
-        <column_name>IMPORTANT_NOTE</column_name>
-        <stream_name>ImportantNote</stream_name>
+        <column_name>SUBSCRIPTION_DISCLAIMER</column_name>
+        <stream_name>SubscriptionDisclaimer</stream_name>
       </field>
       <field>
-        <column_name>DEFAULT_FILING_STATUS_ID</column_name>
-        <stream_name>DefaultFilingStatusID</stream_name>
+        <column_name>IS_SEARCHABLE</column_name>
+        <stream_name>IsSearchable</stream_name>
       </field>
       <field>
-        <column_name>STATUS_ID</column_name>
-        <stream_name>StatusID</stream_name>
+        <column_name>PARENT_PUBLICATION_TYPE_I</column_name>
+        <stream_name>ParentPublicationTypeID</stream_name>
       </field>
       <field>
-        <column_name>SCHEDULED_ACTIVATION_DT</column_name>
-        <stream_name>ScheduledActivationDateTime</stream_name>
+        <column_name>IS_MULTIPLE_CHILDREN_ALL</column_name>
+        <stream_name>IsMultipleChildrenAssignmentsAllowed</stream_name>
       </field>
       <field>
-        <column_name>ACTIVATION_DATE_TIME</column_name>
-        <stream_name>ActivationDateTime</stream_name>
+        <column_name>HAS_CHILDREN_WITH_DIFF</column_name>
+        <stream_name>HasChildrenWithDifferentVariations</stream_name>
       </field>
       <field>
-        <column_name>SCHEDULED_DEACTIVATION_DT</column_name>
-        <stream_name>ScheduledDeactivationDateTime</stream_name>
+        <column_name>ENUM_CONSTANT_NAME</column_name>
+        <stream_name>EnumConstantName</stream_name>
       </field>
       <field>
-        <column_name>DEACTIVATION_DATE_TIME</column_name>
-        <stream_name>DeactivationDateTime</stream_name>
+        <column_name>PC_SEQUENCE</column_name>
+        <stream_name>Sequence</stream_name>
       </field>
       <field>
-        <column_name>IS_MULTI_STATE</column_name>
-        <stream_name>IsMultiState</stream_name>
+        <column_name>IS_URL</column_name>
+        <stream_name>IsURL</stream_name>
       </field>
       <field>
-        <column_name>IS_ALL_COMPANIES</column_name>
-        <stream_name>IsAllCompanies</stream_name>
+        <column_name>GROUPED_NAME</column_name>
+        <stream_name>GroupedName</stream_name>
       </field>
       <field>
-        <column_name>IS_DEPRECATED</column_name>
-        <stream_name>IsDeprecated</stream_name>
+        <column_name>GROUPED_SHORT_NAME</column_name>
+        <stream_name>GroupedShortName</stream_name>
       </field>
       <field>
-        <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EffectiveDate</stream_name>
+        <column_name>ARE_ASSIGNMENTS_VISIBLE</column_name>
+        <stream_name>AreAssignmentsVisible</stream_name>
       </field>
       <field>
-        <column_name>IN_ACTIVE_DATE</column_name>
-        <stream_name>InActiveDate</stream_name>
+        <column_name>IS_MULTI_STATE_AVAILABLE</column_name>
+        <stream_name>IsMultistateAvailable</stream_name>
       </field>
       <field>
-        <column_name>IS_CART_ALLOWED</column_name>
-        <stream_name>IsCartAllowed</stream_name>
+        <column_name>IS_CLASS_USED</column_name>
+        <stream_name>IsClassUsed</stream_name>
       </field>
       <field>
-        <column_name>URL</column_name>
-        <stream_name>URL</stream_name>
+        <column_name>IS_USED_FOR_PRIVELEGE_ASS</column_name>
+        <stream_name>IsUsedForPrivilegeAssociation</stream_name>
       </field>
       <field>
-        <column_name>SORT_PRIMARY_ASC</column_name>
-        <stream_name>SortPrimaryAsc</stream_name>
+        <column_name>ARE_PRIVELEGE_ASSOC_AV</column_name>
+        <stream_name>ArePrivilegeAssociationsAvailable</stream_name>
       </field>
       <field>
-        <column_name>SORT_SECONDARY_ASC</column_name>
-        <stream_name>SortSecondaryAsc</stream_name>
-      </field>
-      <field>
-        <column_name>SORT_PRIMARY_DESC</column_name>
-        <stream_name>SortPrimaryDesc</stream_name>
-      </field>
-      <field>
-        <column_name>SORT_SECONDARY_DESC</column_name>
-        <stream_name>SortSecondaryDesc</stream_name>
-      </field>
-      <field>
-        <column_name>ASSOCIATION_ID</column_name>
-        <stream_name>AssociationID</stream_name>
+        <column_name>SORT_TYPE_ID</column_name>
+        <stream_name>SortTypeID</stream_name>
       </field>
       <field>
         <column_name>ID</column_name>
@@ -1478,5 +1333,9 @@ FROM dbo.Publication
   <slave-step-copy-partition-distribution>
   </slave-step-copy-partition-distribution>
   <slave_transformation>N</slave_transformation>
-  <attributes/>
+  <attributes>
+    <group>
+      <name>explorerState</name>
+    </group>
+  </attributes>
 </transformation>

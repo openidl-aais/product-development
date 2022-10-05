@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2022/06/14 08:34:25.648</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/07/07 13:54:54.193</modified_date>
+    <modified_date>2022/09/28 08:42:37.499</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -660,48 +660,64 @@
       <schema_name/>
     </partitioning>
     <connection>devmart filings</connection>
-    <sql>SELECT
-  dtl.DFORM_ID
-, dtl.FORM_ID
-, dtl.FORM
-, dtl.EDITION
-, line.REPORTDESCRIPTION as LINE_NAME
-, dtl.LINE
-, dtl.CATEGORY
-, dtl.STATE
-, dtl.CLASS
-, UPPER(dtl.ACTIVECODE) as ACTIVECODE
-, case
-	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then null
+    <sql>SELECT 
+NVL(dtl.FORM, 'NULL') AS FormName,
+NVL(dtl.EDITION,'NULL') AS EDITION,
+REPLACE(REPLACE(dtl.DOCUMENT_NUMBER|| dtl.FORMS_REVISION,' ',''),'-','') AS DOCUMENT_KEY,
+NVL(dtl.FORM_ID, 0) AS FORM_ID,
+NVL(dtl.LINE, 'NULL') AS LINE,
+line.REPORTDESCRIPTION as LINE_NAME,
+NVL(dtl.CATEGORY, 'NULL') AS CATEGORY,
+NVL(dtl.STATE, '  ') AS STATE,
+NVL(dtl.CLASS, 'NULL') AS CLASS,
+CASE  
+WHEN dtl.EFF_DT IS NOT NULL THEN dtl.EFF_DT
+ELSE to_timestamp('01-JAN-1950')
+END AS EFFECTIVE_DATE,
+CASE 
+	WHEN dtl.ACTIVECODE ='I' AND validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 1 THEN to_date(dtl.ACTIVITYDATE, 'MM/dd/yyyy')
+	ELSE NVL(dtl.EXP_DT, '31-DEC-9999')
+END AS ExpirationDate,
+UPPER(dtl.ACTIVECODE) AS ACTIVECODE,
+NVL(dtl.EDITION, 'NULL') AS EDITION,
+NVL(dtl.DFORM_ID, 0) AS DFORM_ID,
+NVL(dtl.ACTIVECODE, 'NULL') AS ACTIVECODE,
+case
+	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then to_date('01-JAN-1950')
 	else to_date(dtl.ACTIVITYDATE, 'MM/dd/yyyy')
-end as ACTIVITYDATE
-, dtl.DETTEXT
-, dtl.FILED
-, dtl.DOCNUM
-, dtl.DOIFILINGNUM
-, dtl.AAISFILINGNUM
-, dtl.SERFF_TRACKING_NUMBER
-, dtl.SERFF_COMPANY_STATUS
-, dtl.SERFF_FORM_TYPE
-, dtl.SERFF_REPLACED_FORM_NUMBER
-, dtl.STATESPECIFIC
-, dtl.SERFF_FORM_EDITION_DATE
-, dtl.CREATE_DT
-, dtl.UPDATE_DT
-, dtl.FORMTITLE
-, dtl.EFF_DT
-, dtl.EXP_DT
-, dtl.FORMSEQ
-, dtl.RATEIMPACT
-, dtl.DOCUMENT_NUMBER
-, dtl.FORMS_REVISION
-, dtl.ALFRESCO_KEY
-, dtl.EXP_SERFF_TRACKING_NUMBER
-, dtl.FORM_ACTION
+end as ACTIVITYDATE,
+NVL(dtl.ACTIVITYDATE, 'NULL') AS ACTIVITYDATE,
+NVL(dtl.DETTEXT, 'NULL') AS DetailText,
+NVL(dtl.FILED, 0) AS FILED,
+NVL(dtl.DOIFILINGNUM, 'NULL') AS DOIFILINGNUM,
+NVL(dtl.AAISFILINGNUM, 'NULL') AS AAISFILINGNUM,
+NVL(dtl.SERFF_TRACKING_NUMBER, 'NULL') AS SERFF_TRACKING_NUMBER,
+NVL(dtl.SERFF_COMPANY_STATUS, 'NULL') AS SERFF_COMPANY_STATUS,
+NVL(dtl.SERFF_FORM_TYPE, 'NULL') AS SERFF_FORM_TYPE,
+NVL(dtl.SERFF_REPLACED_FORM_NUMBER, 'NULL') AS SERFF_REPLACED_FORM_NUMBER,
+NVL(dtl.STATESPECIFIC, ' ') AS STATESPECIFIC,
+NVL(dtl.SERFF_FORM_EDITION_DATE, 'NULL') AS SERFF_FORM_EDITION_DATE,
+NVL(dtl.CREATE_DT, '01-JAN-1950') AS CREATE_DT,
+NVL(dtl.UPDATE_DT, '01-JAN-1950') AS UPDATE_DT,
+NVL(dtl.FORMTITLE, 'NULL') AS FORMTITLE,
+NVL(dtl.FORMSEQ, 0) AS FORMSEQ,
+NVL(dtl.RATEIMPACT, 0) AS RATEIMPACT,
+NVL(dtl.DOCUMENT_NUMBER, 'NULL') AS DOCUMENT_NUMBER,
+NVL(dtl.FORMS_REVISION, 'NULL') AS FORMS_REVISION,
+NVL(dtl.EXP_SERFF_TRACKING_NUMBER, 'NULL') AS EXP_SERFF_TRACKING_NUMBER,
+dtl.DOCUMENT_NUMBER||' '|| dtl.FORMS_REVISION||' '|| LL.LINE_FOR_FRESCO_KEY||' '||dtl.STATE AS ALFRESCO_KEY,
+NVL(dtl.FORM_ACTION, 'NULL') AS FORM_ACTION,
+case
+	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then dtl.ACTIVITYDATE
+	else 'NULL'
+END AS ACTIVITY_TEXT
 FROM AAIS_FILINGS.FE_FORMS_DETAIL dtl
-JOIN AAIS_FILINGS.FE_LINE line on line.LINECODE = dtl.LINE
-where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PROGRAM'
-
+LEFT JOIN AAIS_FILINGS.FE_LINE line on line.LINECODE = dtl.LINE
+LEFT JOIN GREGW.LINE_LOOKUP ll ON dtl.LINE= ll.LINE 
+WHERE 1=1
+AND UPPER(dtl.ACTIVECODE) IN ('I','W','A')
+AND LL.LINE_FOR_FRESCO_KEY IN ('COP')
+AND dtl.STATE ='LA'
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -711,59 +727,13 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
     <cached_row_meta_active>N</cached_row_meta_active>
     <row-meta>
       <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>DFORM_ID</name>
-        <length>7</length>
-        <precision>0</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>DFORM_ID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>FORM_ID</name>
-        <length>7</length>
-        <precision>0</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>FORM_ID</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>FORM</name>
+        <name>FORMNAME</name>
         <length>26</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>FORM</comments>
+        <comments>FORMNAME</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -805,14 +775,37 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>LINE_NAME</name>
-        <length>128</length>
+        <name>DOCUMENT_KEY</name>
+        <length>40</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>LINE_NAME</comments>
+        <comments>DOCUMENT_KEY</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>BigNumber</type>
+        <storagetype>normal</storagetype>
+        <name>FORM_ID</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>FORM_ID</comments>
+        <conversion_Mask>######0.0###################;-######0.0###################</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol/>
         <currency_symbol/>
         <trim_type>none</trim_type>
         <case_insensitive>N</case_insensitive>
@@ -833,6 +826,29 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
         <comments>LINE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>LINE_NAME</name>
+        <length>128</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>LINE_NAME</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -918,9 +934,124 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>EFFECTIVE_DATE</name>
+        <length>9</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>EFFECTIVE_DATE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>EXPIRATIONDATE</name>
+        <length>6</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>EXPIRATIONDATE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
         <name>ACTIVECODE</name>
+        <length>26</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>ACTIVECODE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>EDITION_1</name>
+        <length>26</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>EDITION</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>BigNumber</type>
+        <storagetype>normal</storagetype>
+        <name>DFORM_ID</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>DFORM_ID</comments>
+        <conversion_Mask>######0.0###################;-######0.0###################</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ACTIVECODE_1</name>
         <length>26</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
@@ -966,35 +1097,12 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>DETTEXT</name>
-        <length>256</length>
+        <name>ACTIVITYDATE_1</name>
+        <length>26</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>DETTEXT</comments>
+        <comments>ACTIVITYDATE</comments>
         <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>FILED</name>
-        <length>7</length>
-        <precision>0</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>FILED</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -1012,14 +1120,37 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>DOCNUM</name>
+        <name>DETAILTEXT</name>
         <length>256</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
-        <comments>DOCNUM</comments>
+        <comments>DETAILTEXT</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>BigNumber</type>
+        <storagetype>normal</storagetype>
+        <name>FILED</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>FILED</comments>
+        <conversion_Mask>######0.0###################;-######0.0###################</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol/>
         <currency_symbol/>
         <trim_type>none</trim_type>
         <case_insensitive>N</case_insensitive>
@@ -1286,57 +1417,11 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>EFF_DT</name>
-        <length>6</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>EFF_DT</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>EXP_DT</name>
-        <length>6</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>EXP_DT</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>BigNumber</type>
         <storagetype>normal</storagetype>
         <name>FORMSEQ</name>
-        <length>26</length>
-        <precision>0</precision>
+        <length>-1</length>
+        <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
         <comments>FORMSEQ</comments>
         <conversion_Mask>######0.0###################;-######0.0###################</conversion_Mask>
@@ -1355,16 +1440,16 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>Integer</type>
+        <type>BigNumber</type>
         <storagetype>normal</storagetype>
         <name>RATEIMPACT</name>
-        <length>7</length>
-        <precision>0</precision>
+        <length>-1</length>
+        <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
         <comments>RATEIMPACT</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
+        <conversion_Mask>######0.0###################;-######0.0###################</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
+        <grouping_symbol/>
         <currency_symbol/>
         <trim_type>none</trim_type>
         <case_insensitive>N</case_insensitive>
@@ -1426,29 +1511,6 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>ALFRESCO_KEY</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>ALFRESCO_KEY</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
         <name>EXP_SERFF_TRACKING_NUMBER</name>
         <length>50</length>
         <precision>-1</precision>
@@ -1472,11 +1534,57 @@ where Trim(dtl.STATE) in ('WA','OH') and line.REPORTDESCRIPTION ='HOMEOWNERS PRO
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
+        <name>ALFRESCO_KEY</name>
+        <length>95</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>ALFRESCO_KEY</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
         <name>FORM_ACTION</name>
         <length>50</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
         <comments>FORM_ACTION</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Chicago</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ACTIVITY_TEXT</name>
+        <length>26</length>
+        <precision>-1</precision>
+        <origin>FE_FORM_DETAIL input</origin>
+        <comments>ACTIVITY_TEXT</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
