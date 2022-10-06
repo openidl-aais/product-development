@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2022/06/14 08:34:25.648</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/10/05 21:05:25.864</modified_date>
+    <modified_date>2022/10/05 21:16:53.668</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -655,63 +655,7 @@
       <schema_name/>
     </partitioning>
     <connection>devmart filings</connection>
-    <sql>SELECT 
-NVL(dtl.FORM, 'NULL') AS FormName,
-NVL(dtl.EDITION,'NULL') AS EDITION,
-REPLACE(REPLACE(dtl.DOCUMENT_NUMBER|| dtl.FORMS_REVISION,' ',''),'-','') AS DOCUMENT_KEY,
-NVL(dtl.FORM_ID, 0) AS FORM_ID,
-NVL(dtl.LINE, 'NULL') AS LINE,
-line.REPORTDESCRIPTION as LINE_NAME,
-NVL(dtl.CATEGORY, 'NULL') AS CATEGORY,
-NVL(dtl.STATE, '  ') AS STATE,
-NVL(dtl.CLASS, 'NULL') AS CLASS,
-CASE  
-WHEN dtl.EFF_DT IS NOT NULL THEN dtl.EFF_DT
-ELSE to_timestamp('01-JAN-1950')
-END AS EFFECTIVE_DATE,
-CASE 
-	WHEN dtl.ACTIVECODE ='I' AND validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 1 THEN to_date(dtl.ACTIVITYDATE, 'MM/dd/yyyy')
-	ELSE NVL(dtl.EXP_DT, '31-DEC-9999')
-END AS ExpirationDate,
-UPPER(dtl.ACTIVECODE) AS ACTIVECODE,
-NVL(dtl.DFORM_ID, 0) AS DFORM_ID,
-NVL(dtl.ACTIVECODE, 'NULL') AS ACTIVECODE,
-case
-	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then to_date('01-JAN-1950')
-	else to_date(dtl.ACTIVITYDATE, 'MM/dd/yyyy')
-end as ACTIVITYDATE,
-NVL(dtl.DETTEXT, 'NULL') AS DetailText,
-NVL(dtl.FILED, 0) AS FILED,
-NVL(dtl.DOIFILINGNUM, 'NULL') AS DOIFILINGNUM,
-NVL(dtl.AAISFILINGNUM, 'NULL') AS AAISFILINGNUM,
-NVL(dtl.SERFF_TRACKING_NUMBER, 'NULL') AS SERFF_TRACKING_NUMBER,
-NVL(dtl.SERFF_COMPANY_STATUS, 'NULL') AS SERFF_COMPANY_STATUS,
-NVL(dtl.SERFF_FORM_TYPE, 'NULL') AS SERFF_FORM_TYPE,
-NVL(dtl.SERFF_REPLACED_FORM_NUMBER, 'NULL') AS SERFF_REPLACED_FORM_NUMBER,
-NVL(dtl.STATESPECIFIC, ' ') AS STATESPECIFIC,
-NVL(dtl.SERFF_FORM_EDITION_DATE, 'NULL') AS SERFF_FORM_EDITION_DATE,
-NVL(dtl.CREATE_DT, '01-JAN-1950') AS CREATE_DT,
-NVL(dtl.UPDATE_DT, '01-JAN-1950') AS UPDATE_DT,
-NVL(dtl.FORMTITLE, 'NULL') AS FORMTITLE,
-NVL(dtl.FORMSEQ, 0) AS FORMSEQ,
-NVL(dtl.RATEIMPACT, 0) AS RATEIMPACT,
-NVL(dtl.DOCUMENT_NUMBER, 'NULL') AS DOCUMENT_NUMBER,
-NVL(dtl.FORMS_REVISION, 'NULL') AS FORMS_REVISION,
-NVL(dtl.EXP_SERFF_TRACKING_NUMBER, 'NULL') AS EXP_SERFF_TRACKING_NUMBER,
-dtl.DOCUMENT_NUMBER||' '|| dtl.FORMS_REVISION||' '|| LL.LINE_FOR_FRESCO_KEY||' '||dtl.STATE AS ALFRESCO_KEY,
-NVL(dtl.FORM_ACTION, 'NULL') AS FORM_ACTION,
-case
-	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then dtl.ACTIVITYDATE
-	else 'NULL'
-END AS ACTIVITY_TEXT
-FROM AAIS_FILINGS.FE_FORMS_DETAIL dtl
-LEFT JOIN AAIS_FILINGS.FE_LINE line on line.LINECODE = dtl.LINE
-LEFT JOIN GREGW.LINE_LOOKUP ll ON dtl.LINE= ll.LINE 
-WHERE 1=1
-AND UPPER(dtl.ACTIVECODE) IN ('I','W','A')
-
-
-</sql>
+    <sql/>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -1575,7 +1519,7 @@ AND UPPER(dtl.ACTIVECODE) IN ('I','W','A')
     </partitioning>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_FD_FORM_FILING_DETAIL</table>
+    <table>SA_FD_FORM_FILING</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
