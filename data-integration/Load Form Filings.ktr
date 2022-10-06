@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2022/06/14 08:34:25.648</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/09/28 08:42:37.499</modified_date>
+    <modified_date>2022/10/05 21:05:25.864</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -556,11 +556,6 @@
       <to>Add constants</to>
       <enabled>Y</enabled>
     </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Table output</to>
-      <enabled>Y</enabled>
-    </hop>
   </order>
   <step>
     <name>Add constants</name>
@@ -608,8 +603,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>224</yloc>
+      <xloc>448</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -679,14 +674,12 @@ CASE
 	ELSE NVL(dtl.EXP_DT, '31-DEC-9999')
 END AS ExpirationDate,
 UPPER(dtl.ACTIVECODE) AS ACTIVECODE,
-NVL(dtl.EDITION, 'NULL') AS EDITION,
 NVL(dtl.DFORM_ID, 0) AS DFORM_ID,
 NVL(dtl.ACTIVECODE, 'NULL') AS ACTIVECODE,
 case
 	when validate_conversion(dtl.ACTIVITYDATE as date, 'MM/DD/YYYY') = 0 then to_date('01-JAN-1950')
 	else to_date(dtl.ACTIVITYDATE, 'MM/dd/yyyy')
 end as ACTIVITYDATE,
-NVL(dtl.ACTIVITYDATE, 'NULL') AS ACTIVITYDATE,
 NVL(dtl.DETTEXT, 'NULL') AS DetailText,
 NVL(dtl.FILED, 0) AS FILED,
 NVL(dtl.DOIFILINGNUM, 'NULL') AS DOIFILINGNUM,
@@ -716,8 +709,8 @@ LEFT JOIN AAIS_FILINGS.FE_LINE line on line.LINECODE = dtl.LINE
 LEFT JOIN GREGW.LINE_LOOKUP ll ON dtl.LINE= ll.LINE 
 WHERE 1=1
 AND UPPER(dtl.ACTIVECODE) IN ('I','W','A')
-AND LL.LINE_FOR_FRESCO_KEY IN ('COP')
-AND dtl.STATE ='LA'
+
+
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -1003,29 +996,6 @@ AND dtl.STATE ='LA'
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>EDITION_1</name>
-        <length>26</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>EDITION</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
         <type>BigNumber</type>
         <storagetype>normal</storagetype>
         <name>DFORM_ID</name>
@@ -1076,29 +1046,6 @@ AND dtl.STATE ='LA'
         <storagetype>normal</storagetype>
         <name>ACTIVITYDATE</name>
         <length>0</length>
-        <precision>-1</precision>
-        <origin>FE_FORM_DETAIL input</origin>
-        <comments>ACTIVITYDATE</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>America/Chicago</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>ACTIVITYDATE_1</name>
-        <length>26</length>
         <precision>-1</precision>
         <origin>FE_FORM_DETAIL input</origin>
         <comments>ACTIVITYDATE</comments>
@@ -1610,8 +1557,8 @@ AND dtl.STATE ='LA'
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
-      <yloc>96</yloc>
+      <xloc>96</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1628,7 +1575,7 @@ AND dtl.STATE ='LA'
     </partitioning>
     <connection>PDP Semarchy</connection>
     <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_FD_FORM_FILING</table>
+    <table>SA_FD_FORM_FILING_DETAIL</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
@@ -1650,7 +1597,7 @@ AND dtl.STATE ='LA'
       </field>
       <field>
         <column_name>FORM_NAME</column_name>
-        <stream_name>FORM</stream_name>
+        <stream_name>FORMNAME</stream_name>
       </field>
       <field>
         <column_name>EDITION</column_name>
@@ -1659,10 +1606,6 @@ AND dtl.STATE ='LA'
       <field>
         <column_name>LINE</column_name>
         <stream_name>LINE</stream_name>
-      </field>
-      <field>
-        <column_name>D_FORM_ID</column_name>
-        <stream_name>DFORM_ID</stream_name>
       </field>
       <field>
         <column_name>ADMIN_FORM_ACTION</column_name>
@@ -1677,14 +1620,6 @@ AND dtl.STATE ='LA'
         <stream_name>CLASSNAME</stream_name>
       </field>
       <field>
-        <column_name>ACTIVITY_DATE</column_name>
-        <stream_name>ACTIVITYDATE</stream_name>
-      </field>
-      <field>
-        <column_name>SYSTEM_ID</column_name>
-        <stream_name>FORM_ID</stream_name>
-      </field>
-      <field>
         <column_name>CATEGORY</column_name>
         <stream_name>CATEGORY</stream_name>
       </field>
@@ -1697,20 +1632,12 @@ AND dtl.STATE ='LA'
         <stream_name>CLASS</stream_name>
       </field>
       <field>
-        <column_name>ACTIVE_CODE</column_name>
-        <stream_name>ACTIVECODE</stream_name>
-      </field>
-      <field>
         <column_name>DETAIL_TEXT</column_name>
-        <stream_name>DETTEXT</stream_name>
+        <stream_name>DETAILTEXT</stream_name>
       </field>
       <field>
         <column_name>FILED</column_name>
         <stream_name>FILED</stream_name>
-      </field>
-      <field>
-        <column_name>DOCUMENT_NUMBER</column_name>
-        <stream_name>DOCNUM</stream_name>
       </field>
       <field>
         <column_name>DOI_FILING_NUMBER</column_name>
@@ -1737,10 +1664,6 @@ AND dtl.STATE ='LA'
         <stream_name>SERFF_REPLACED_FORM_NUMBER</stream_name>
       </field>
       <field>
-        <column_name>STATE_SPECIFIC</column_name>
-        <stream_name>STATESPECIFIC</stream_name>
-      </field>
-      <field>
         <column_name>SYSTEM_FORM_EDITION_DATE</column_name>
         <stream_name>SERFF_FORM_EDITION_DATE</stream_name>
       </field>
@@ -1758,11 +1681,11 @@ AND dtl.STATE ='LA'
       </field>
       <field>
         <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EFF_DT</stream_name>
+        <stream_name>EFFECTIVE_DATE</stream_name>
       </field>
       <field>
         <column_name>EXPIRATION_DATE</column_name>
-        <stream_name>EXP_DT</stream_name>
+        <stream_name>EXPIRATIONDATE</stream_name>
       </field>
       <field>
         <column_name>FORM_SEQUENCE</column_name>
@@ -1792,6 +1715,30 @@ AND dtl.STATE ='LA'
         <column_name>LINE_NAME</column_name>
         <stream_name>LINE_NAME</stream_name>
       </field>
+      <field>
+        <column_name>ACTIVITY_TEXT</column_name>
+        <stream_name>ACTIVITY_TEXT</stream_name>
+      </field>
+      <field>
+        <column_name>STATESPECIFIC</column_name>
+        <stream_name>STATESPECIFIC</stream_name>
+      </field>
+      <field>
+        <column_name>ACTIVITYDATE</column_name>
+        <stream_name>ACTIVITYDATE</stream_name>
+      </field>
+      <field>
+        <column_name>ACTIVECODE</column_name>
+        <stream_name>ACTIVECODE</stream_name>
+      </field>
+      <field>
+        <column_name>DOCUMENT_KEY</column_name>
+        <stream_name>DOCUMENT_KEY</stream_name>
+      </field>
+      <field>
+        <column_name>FORM_ID</column_name>
+        <stream_name>FORM_ID</stream_name>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1802,8 +1749,8 @@ AND dtl.STATE ='LA'
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>352</yloc>
+      <xloc>560</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
