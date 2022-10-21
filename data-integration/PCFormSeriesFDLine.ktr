@@ -1137,7 +1137,7 @@ FROM PDP_DATA_LOCATION.GD_FD_LINE
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>INNER</join_type>
+    <join_type>FULL OUTER</join_type>
     <step1>Sort on Line</step1>
     <step2>Sort on Line Code</step2>
     <keys_1>
@@ -1461,7 +1461,7 @@ join PDP_DATA_LOCATION.GD_PC_LINE_OF_BUSINESS lob on lob.ID = series.F_LINE_OF_B
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>INNER</join_type>
+    <join_type>FULL OUTER</join_type>
     <step1>sort lob and name</step1>
     <step2>Sort by line and series</step2>
     <keys_1>
@@ -1597,7 +1597,7 @@ join PDP_DATA_LOCATION.GD_PC_LINE_OF_BUSINESS lob on lob.ID = series.F_LINE_OF_B
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>INNER</join_type>
+    <join_type>FULL OUTER</join_type>
     <step1>Sort by line and series for series</step1>
     <step2>Sort by line and series again for line</step2>
     <keys_1>
