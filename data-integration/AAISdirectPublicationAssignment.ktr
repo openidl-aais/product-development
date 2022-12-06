@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2022/09/14 14:23:44.637</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/10/06 14:49:01.016</modified_date>
+    <modified_date>2022/12/05 17:03:22.540</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -565,26 +565,6 @@
       <to>Table output</to>
       <enabled>Y</enabled>
     </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Table output 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Table output 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Table output 4</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Table output 5</to>
-      <enabled>Y</enabled>
-    </hop>
   </order>
   <step>
     <name>Add constants</name>
@@ -605,7 +585,7 @@
         <currency/>
         <decimal/>
         <group/>
-        <nullif>19256</nullif>
+        <nullif>18932</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -633,7 +613,7 @@
     </remotesteps>
     <GUI>
       <xloc>544</xloc>
-      <yloc>112</yloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -667,8 +647,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>392</xloc>
-      <yloc>112</yloc>
+      <xloc>368</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -701,7 +681,8 @@
 , InActiveDate
 , BatchDateTime
 FROM PublicationAssignment
-where StateID in (21,23,24,25,26,27,29,30 )
+where StateID in (31,32,33,34,35,36,37,40,41,42,43,44,46,48,49,50,51,52,53,54,55)
+
 
 </sql>
     <limit>0</limit>
@@ -1066,8 +1047,8 @@ where StateID in (21,23,24,25,26,27,29,30 )
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
-      <yloc>112</yloc>
+      <xloc>160</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1162,392 +1143,8 @@ where StateID in (21,23,24,25,26,27,29,30 )
       </output>
     </remotesteps>
     <GUI>
-      <xloc>576</xloc>
-      <yloc>304</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Table output 2</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PDP Semarchy</connection>
-    <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_PC_PUBLICATION_ASSIGNMENT</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>PUBLICATION_ID</column_name>
-        <stream_name>PublicationID</stream_name>
-      </field>
-      <field>
-        <column_name>FILING_STATUS_ID</column_name>
-        <stream_name>FilingStatusID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_ID</column_name>
-        <stream_name>LineID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_VERSION_ID</column_name>
-        <stream_name>LineVersionID</stream_name>
-      </field>
-      <field>
-        <column_name>CLASS_ID</column_name>
-        <stream_name>ClassID</stream_name>
-      </field>
-      <field>
-        <column_name>STATE_ID</column_name>
-        <stream_name>StateID</stream_name>
-      </field>
-      <field>
-        <column_name>REVISION_ID</column_name>
-        <stream_name>RevisionID</stream_name>
-      </field>
-      <field>
-        <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EffectiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>IN_ACTIVE_DATE</column_name>
-        <stream_name>InActiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>BATCH_DATE_TIME</column_name>
-        <stream_name>BatchDateTime</stream_name>
-      </field>
-      <field>
-        <column_name>ID</column_name>
-        <stream_name>New_ID</stream_name>
-      </field>
-      <field>
-        <column_name>B_LOADID</column_name>
-        <stream_name>LoadID</stream_name>
-      </field>
-      <field>
-        <column_name>B_CLASSNAME</column_name>
-        <stream_name>ClassName</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>688</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Table output 3</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PDP Semarchy</connection>
-    <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_PC_PUBLICATION_ASSIGNMENT</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>PUBLICATION_ID</column_name>
-        <stream_name>PublicationID</stream_name>
-      </field>
-      <field>
-        <column_name>FILING_STATUS_ID</column_name>
-        <stream_name>FilingStatusID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_ID</column_name>
-        <stream_name>LineID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_VERSION_ID</column_name>
-        <stream_name>LineVersionID</stream_name>
-      </field>
-      <field>
-        <column_name>CLASS_ID</column_name>
-        <stream_name>ClassID</stream_name>
-      </field>
-      <field>
-        <column_name>STATE_ID</column_name>
-        <stream_name>StateID</stream_name>
-      </field>
-      <field>
-        <column_name>REVISION_ID</column_name>
-        <stream_name>RevisionID</stream_name>
-      </field>
-      <field>
-        <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EffectiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>IN_ACTIVE_DATE</column_name>
-        <stream_name>InActiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>BATCH_DATE_TIME</column_name>
-        <stream_name>BatchDateTime</stream_name>
-      </field>
-      <field>
-        <column_name>ID</column_name>
-        <stream_name>New_ID</stream_name>
-      </field>
-      <field>
-        <column_name>B_LOADID</column_name>
-        <stream_name>LoadID</stream_name>
-      </field>
-      <field>
-        <column_name>B_CLASSNAME</column_name>
-        <stream_name>ClassName</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>784</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Table output 4</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PDP Semarchy</connection>
-    <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_PC_PUBLICATION_ASSIGNMENT</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>PUBLICATION_ID</column_name>
-        <stream_name>PublicationID</stream_name>
-      </field>
-      <field>
-        <column_name>FILING_STATUS_ID</column_name>
-        <stream_name>FilingStatusID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_ID</column_name>
-        <stream_name>LineID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_VERSION_ID</column_name>
-        <stream_name>LineVersionID</stream_name>
-      </field>
-      <field>
-        <column_name>CLASS_ID</column_name>
-        <stream_name>ClassID</stream_name>
-      </field>
-      <field>
-        <column_name>STATE_ID</column_name>
-        <stream_name>StateID</stream_name>
-      </field>
-      <field>
-        <column_name>REVISION_ID</column_name>
-        <stream_name>RevisionID</stream_name>
-      </field>
-      <field>
-        <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EffectiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>IN_ACTIVE_DATE</column_name>
-        <stream_name>InActiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>BATCH_DATE_TIME</column_name>
-        <stream_name>BatchDateTime</stream_name>
-      </field>
-      <field>
-        <column_name>ID</column_name>
-        <stream_name>New_ID</stream_name>
-      </field>
-      <field>
-        <column_name>B_LOADID</column_name>
-        <stream_name>LoadID</stream_name>
-      </field>
-      <field>
-        <column_name>B_CLASSNAME</column_name>
-        <stream_name>ClassName</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>832</xloc>
-      <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Table output 5</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PDP Semarchy</connection>
-    <schema>PDP_DATA_LOCATION</schema>
-    <table>SA_PC_PUBLICATION_ASSIGNMENT</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>PUBLICATION_ID</column_name>
-        <stream_name>PublicationID</stream_name>
-      </field>
-      <field>
-        <column_name>FILING_STATUS_ID</column_name>
-        <stream_name>FilingStatusID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_ID</column_name>
-        <stream_name>LineID</stream_name>
-      </field>
-      <field>
-        <column_name>LINE_VERSION_ID</column_name>
-        <stream_name>LineVersionID</stream_name>
-      </field>
-      <field>
-        <column_name>CLASS_ID</column_name>
-        <stream_name>ClassID</stream_name>
-      </field>
-      <field>
-        <column_name>STATE_ID</column_name>
-        <stream_name>StateID</stream_name>
-      </field>
-      <field>
-        <column_name>REVISION_ID</column_name>
-        <stream_name>RevisionID</stream_name>
-      </field>
-      <field>
-        <column_name>EFFECTIVE_DATE</column_name>
-        <stream_name>EffectiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>IN_ACTIVE_DATE</column_name>
-        <stream_name>InActiveDate</stream_name>
-      </field>
-      <field>
-        <column_name>BATCH_DATE_TIME</column_name>
-        <stream_name>BatchDateTime</stream_name>
-      </field>
-      <field>
-        <column_name>ID</column_name>
-        <stream_name>New_ID</stream_name>
-      </field>
-      <field>
-        <column_name>B_LOADID</column_name>
-        <stream_name>LoadID</stream_name>
-      </field>
-      <field>
-        <column_name>B_CLASSNAME</column_name>
-        <stream_name>ClassName</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>48</yloc>
+      <xloc>720</xloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
