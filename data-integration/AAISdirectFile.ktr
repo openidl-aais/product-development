@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2022/09/14 14:23:44.637</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/09/29 13:27:55.668</modified_date>
+    <modified_date>2022/12/07 11:04:55.422</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -585,7 +585,7 @@
         <currency/>
         <decimal/>
         <group/>
-        <nullif>19256</nullif>
+        <nullif>18932</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -612,8 +612,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>544</xloc>
-      <yloc>112</yloc>
+      <xloc>512</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -647,8 +647,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>392</xloc>
-      <yloc>112</yloc>
+      <xloc>352</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -665,34 +665,23 @@
     </partitioning>
     <connection>AAISdirect old</connection>
     <sql>SELECT
-  F2.FileID
-, F2.InsertUserID
-, F2.InsertDateTime
-, F2.UpdateUserID
-, F2.UpdateDateTime
-, F2.FileTypeID
-, F2.Name
-, F2."Size"
-, F2."Path"
-, F2.SqlPopulationHelper
-, F2."Data"
-, F2.Extension
-, F2.RequiresAuthorization
-, F2.EnumConstantName
-, F2.DataSHA1
-FROM dbo."File"  F2
-JOIN PublicationFile pf on pf.FileID =f2.FileID 
-join Publication p on pf.PublicationID = p.PublicationID 
-where pf.PublicationID in (
-Select PublicationID from PublicationAssignment
-where (LineID in (7,18,28,33)--INland
-AND StateID = 28) --Montana
-OR (LineID in (10,11)--COP
-AND StateID = 20) --LA
-OR (LineID in (1,35,46)--AGop
-AND StateID = 38)--OK
-OR (LineID in (19,20,21)--Farm
-AND StateID in (4,12,22,39,45))) 
+  FileID
+, InsertUserID
+, InsertDateTime
+, UpdateUserID
+, UpdateDateTime
+, FileTypeID
+, Name
+, "Size"
+, "Path"
+, SqlPopulationHelper
+, "Data"
+, Extension
+, RequiresAuthorization
+, EnumConstantName
+, DataSHA1
+FROM dbo."File" 
+
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -1056,8 +1045,8 @@ AND StateID in (4,12,22,39,45)))
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
-      <yloc>112</yloc>
+      <xloc>208</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1152,8 +1141,8 @@ AND StateID in (4,12,22,39,45)))
       </output>
     </remotesteps>
     <GUI>
-      <xloc>672</xloc>
-      <yloc>112</yloc>
+      <xloc>640</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
